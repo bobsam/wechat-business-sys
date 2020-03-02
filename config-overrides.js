@@ -29,7 +29,7 @@ const devServerConfig = () => config => {
         compress: true,
         proxy: {
             '/api': {
-                target: 'http://localhost:9293',
+                target: 'https://www.bobsam.club',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/api',

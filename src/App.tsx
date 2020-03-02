@@ -6,8 +6,6 @@ import {
 } from 'react-router-dom';
 import RouterConfig from './router.config';
 
-// import Home from './pages/index/index';
-
 import './App.less';
 
 const App: React.FC = () => {

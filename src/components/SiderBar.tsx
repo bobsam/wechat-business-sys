@@ -19,7 +19,6 @@ class SiderBar extends Component<IProps, any> {
         return (
             <Menu
                 defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
                 mode="inline"
                 theme="dark"
                 onSelect={this.onMenuClick.bind(this)}
