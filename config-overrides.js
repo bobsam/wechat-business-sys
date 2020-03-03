@@ -6,16 +6,36 @@ const addCustomize = () => config => {
     if (process.env.NODE_ENV === 'production') {
         // 关闭sourceMap
         config.devtool = false;
-        // 配置打包后的文件位置
-        // config.output.path = __dirname + '../dist/demo/';
+        // 资源前缀
         config.output.publicPath = './';
         // 添加js打包gzip配置
         config.plugins.push(
             new CompressionWebpackPlugin({
                 test: /\.js$|\.css$/,
-                threshold: 1024,
-            }),
-        )
+                threshold: 1024
+            })
+        );
+
+        config.optimization.minimize = true;
+
+        config.optimization.splitChunks = {
+            cacheGroups: {
+                // 其次: 打包业务中公共代码
+                common: {
+                    name: "common",
+                    chunks: "all",
+                    minSize: 1,
+                    priority: 1
+                },
+                // 首先: 打包node_modules中的文件
+                vender: {
+                    name: "vendor",
+                    test: /[\\/]node_modules[\\/]/,
+                    chunks: "all",
+                    priority: 10
+                }
+            }
+        };
     }
 
     return config;
