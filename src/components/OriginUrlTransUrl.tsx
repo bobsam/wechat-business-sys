@@ -95,6 +95,8 @@ export default class OriginUrlTransUrl extends Component<any, IState> {
                 });
 
                 this.setModal2Visible(true);
+            } else {
+                message.error('链接生成失败，请稍候再试');
             }
 
             this.setState({

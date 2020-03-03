@@ -27,6 +27,7 @@ interface IState {
         shorturl?: string;
     };
     modalVisible: boolean;
+    submitLoading: boolean;
 }
 
 export default class GoodsTransUrl extends Component<any, IState> {
@@ -42,7 +43,8 @@ export default class GoodsTransUrl extends Component<any, IState> {
             longurl: "",
             shorturl: ""
         },
-        modalVisible: false
+        modalVisible: false,
+        submitLoading: false
     };
 
     async componentDidMount() {
@@ -130,46 +132,68 @@ export default class GoodsTransUrl extends Component<any, IState> {
             return;
         }
 
-        if (urlType === "web") {
-            const resp = await getCoolbuyWebUrl(
-                urlType,
-                currentUser,
-                goodsDetail.id
-            );
+        this.setState({
+            submitLoading: true
+        });
 
-            if (resp.code === 200 && resp.result) {
-                const shortenResp = await generateShortenUrl(resp.result);
+        try {
+            if (urlType === "web") {
+                const resp = await getCoolbuyWebUrl(
+                    urlType,
+                    currentUser,
+                    goodsDetail.id
+                );
 
-                if (shortenResp.code === 200) {
+                if (resp.code === 200 && resp.result) {
+                    const shortenResp = await generateShortenUrl(resp.result);
+
+                    if (shortenResp.code === 200) {
+                        this.setState({
+                            coolbuyWebUrl: resp.result,
+                            shortenUrlMsg: {
+                                longurl: shortenResp.result.longurl,
+                                shorturl: shortenResp.result.shorturl
+                            }
+                        });
+
+                        this.setModal2Visible(true);
+                    }
+                } else {
+                    message.error('生成失败，请稍候再试');
+                }
+            } else if (urlType === "mp") {
+                const resp = await getCoolbuyWebUrl(
+                    urlType,
+                    currentUser,
+                    goodsDetail.id
+                );
+
+                if (resp.code === 200 && resp.result) {
                     this.setState({
-                        coolbuyWebUrl: resp.result,
+                        coolbuyMpUrl: resp.result,
                         shortenUrlMsg: {
-                            longurl: shortenResp.result.longurl,
-                            shorturl: shortenResp.result.shorturl
+                            longurl: resp.result,
+                            shorturl: ""
                         }
                     });
 
                     this.setModal2Visible(true);
+                } else {
+                    message.error('生成失败，请稍候再试');
                 }
             }
-        } else if (urlType === "mp") {
-            const resp = await getCoolbuyWebUrl(
-                urlType,
-                currentUser,
-                goodsDetail.id
-            );
 
-            if (resp.code === 200 && resp.result) {
-                this.setState({
-                    coolbuyMpUrl: resp.result,
-                    shortenUrlMsg: {
-                        longurl: resp.result,
-                        shorturl: ""
-                    }
-                });
+            this.setState({
+                submitLoading: false
+            });
+        } catch (error) {
+            this.setState({
+                submitLoading: false
+            });
 
-                this.setModal2Visible(true);
-            }
+            console.error(error);
+
+            message.error('生成失败，请稍候再试');
         }
     }
 
@@ -208,7 +232,8 @@ export default class GoodsTransUrl extends Component<any, IState> {
             searchLoading,
             goodsDetail,
             modalVisible,
-            shortenUrlMsg
+            shortenUrlMsg,
+            submitLoading
         } = this.state;
         const goodsDetailUrl = goodsDetail.id
             ? `https://coolbuy.com/product/detail/${goodsDetail.id}/`
@@ -257,7 +282,7 @@ export default class GoodsTransUrl extends Component<any, IState> {
                     </Select>
                 </div>
                 <div className="u-operation">
-                    <Button type="primary" onClick={this.onSubmit.bind(this)}>
+                    <Button type="primary" loading={submitLoading} onClick={this.onSubmit.bind(this)}>
                         生成短链接
                     </Button>
                 </div>
