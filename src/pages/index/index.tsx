@@ -6,12 +6,13 @@ import SiderBar from '../../components/SiderBar';
 import DefaultContent from '../../components/DefaultContent';
 import GoodsTransUrl from '../../components/GoodsTransUrl';
 import OriginUrlTransUrl from '../../components/OriginUrlTransUrl';
+import PageFooter from '../../components/PageFooter';
 
 import qs from 'query-string';
 
 import './index.less';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 interface IState {
     currentSidebarKey: string;
@@ -59,7 +60,7 @@ class Home extends Component<RouteComponentProps, IState> {
         return (
             <div className="p-home">
                 <Layout>
-                    <Header style={{color: '#fff'}}>方方系统</Header>
+                    <Header style={{color: '#fff'}}>分享轶事</Header>
                 </Layout>
                 <Layout>
                     <Sider style={{minHeight: '600px'}}>
@@ -72,7 +73,7 @@ class Home extends Component<RouteComponentProps, IState> {
                     </Layout>
                 </Layout>
                 <Layout>
-                    <Footer style={{textAlign: 'center'}}>© Create By Bob - 2020</Footer>
+                    <PageFooter />
                 </Layout>
             </div>
         );
