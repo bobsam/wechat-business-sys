@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Input, message, Button, Modal, Select, Tooltip } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
-import { generateShortenUrl } from "../api/getDetail";
+import { generateShortenUrlV2 } from "../api/getDetail";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyOutlined } from "@ant-design/icons";
 
@@ -80,7 +80,7 @@ export default class OriginUrlTransUrl extends Component<any, IState> {
         });
 
         if (this.checkUrl(inputText)) {
-            const resp = await generateShortenUrl(inputText, urlType);
+            const resp = await generateShortenUrlV2(inputText, urlType);
 
             if (
                 resp.code === 200 &&
@@ -89,8 +89,8 @@ export default class OriginUrlTransUrl extends Component<any, IState> {
             ) {
                 this.setState({
                     urlMsg: {
-                        longurl: resp.result.longurl,
-                        shorturl: resp.result.shorturl
+                        longurl: resp.result.longurl || resp.result.long_url,
+                        shorturl: resp.result.shorturl || resp.result.short_url
                     }
                 });
 
