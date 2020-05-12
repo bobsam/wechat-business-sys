@@ -4,7 +4,8 @@ import {
     getGoodsDetail,
     getAccountMsg,
     getCoolbuyWebUrl,
-    generateShortenUrl
+    // generateShortenUrl,
+    generateShortenUrlV2
 } from "../api/getDetail";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyOutlined } from "@ant-design/icons";
@@ -133,7 +134,13 @@ export default class GoodsTransUrl extends Component<any, IState> {
         }
 
         this.setState({
-            submitLoading: true
+            submitLoading: true,
+            coolbuyWebUrl: '',
+            coolbuyMpUrl: '',
+            shortenUrlMsg: {
+                longurl: '',
+                shorturl: ''
+            }
         });
 
         try {
@@ -145,7 +152,8 @@ export default class GoodsTransUrl extends Component<any, IState> {
                 );
 
                 if (resp.code === 200 && resp.result) {
-                    const shortenResp = await generateShortenUrl(resp.result);
+                    // const shortenResp = await generateShortenUrl(resp.result);
+                    const shortenResp = await generateShortenUrlV2(resp.result);
 
                     if (shortenResp.code === 200) {
                         this.setState({

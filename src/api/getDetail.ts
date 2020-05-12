@@ -1,7 +1,7 @@
 /**
  * @Author: 小贤
  * @Date: 2020-03-01 23:54:12
- * @LastEditTime: 2020-03-03 01:07:24
+ * @LastEditTime: 2020-05-12 17:10:16
  * @LastEditors: 小贤
  * @Description:
  * @Email: gzyuboxian@corp.netease.com
@@ -111,6 +111,40 @@ export async function generateShortenUrl (url: string, type?: string): Promise<I
 
     if (response.status === 200) {
         return response.data;
+    } else {
+        return {
+            code: -999
+        };
+    }
+}
+
+
+/**
+ * 生成短链接
+ *
+ * @export
+ * @param {string} url
+ * @returns
+ */
+export async function generateShortenUrlV2 (url: string, type?: string): Promise<IResponse> {
+    const response = await Axios.request({
+        url: '/api/genUrlByAlapi',
+        method: 'GET',
+        withCredentials: true,
+        params: {
+            url: encodeURIComponent(url || ''),
+            type
+        }
+    });
+
+    if (response.status === 200) {
+        return {
+            ...response.data,
+            result: {
+                ...response.data.result,
+                ...(response.data.result.data || {})
+            }
+        };
     } else {
         return {
             code: -999
