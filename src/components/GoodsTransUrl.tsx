@@ -159,8 +159,8 @@ export default class GoodsTransUrl extends Component<any, IState> {
                         this.setState({
                             coolbuyWebUrl: resp.result,
                             shortenUrlMsg: {
-                                longurl: shortenResp.result.longurl,
-                                shorturl: shortenResp.result.shorturl
+                                longurl: shortenResp.result.longurl || shortenResp.result.long_url,
+                                shorturl: shortenResp.result.shorturl || shortenResp.result.short_url
                             }
                         });
 
