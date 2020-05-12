@@ -233,11 +233,15 @@ export default class GoodsTransUrl extends Component<any, IState> {
             goodsDetail,
             modalVisible,
             shortenUrlMsg,
-            submitLoading
+            submitLoading,
+            coolbuyWebUrl,
+            coolbuyMpUrl
         } = this.state;
         const goodsDetailUrl = goodsDetail.id
             ? `https://coolbuy.com/product/detail/${goodsDetail.id}/`
             : "";
+
+        const originTransUrl = shortenUrlMsg.longurl || coolbuyMpUrl || coolbuyWebUrl || '';
 
         return (
             <div className="m-goodsTransUrl">
@@ -297,15 +301,15 @@ export default class GoodsTransUrl extends Component<any, IState> {
                     <p>
                         原始链接：
                         <a
-                            href={shortenUrlMsg.longurl}
+                            href={originTransUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            {shortenUrlMsg.longurl}
+                            {originTransUrl}
                         </a>
                         <span style={{ marginLeft: 10 }}>
                             <CopyToClipboard
-                                text={shortenUrlMsg.longurl}
+                                text={originTransUrl}
                                 onCopy={() => {
                                     message.success("已复制~");
                                 }}
