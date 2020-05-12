@@ -85,12 +85,12 @@ export default class OriginUrlTransUrl extends Component<any, IState> {
             if (
                 resp.code === 200 &&
                 resp.result &&
-                resp.result.status === 200
+                (resp.result.status === 200 || resp.result.code === 200)
             ) {
                 this.setState({
                     urlMsg: {
-                        longurl: resp.result.longurl || resp.result.long_url,
-                        shorturl: resp.result.shorturl || resp.result.short_url
+                        longurl: resp.result.longurl || resp.result.long_url || '',
+                        shorturl: resp.result.shorturl || resp.result.short_url || ''
                     }
                 });
 
