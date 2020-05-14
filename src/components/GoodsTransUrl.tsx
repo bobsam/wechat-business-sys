@@ -152,19 +152,30 @@ export default class GoodsTransUrl extends Component<any, IState> {
                 );
 
                 if (resp.code === 200 && resp.result) {
-                    // const shortenResp = await generateShortenUrl(resp.result);
-                    const shortenResp = await generateShortenUrlV2(resp.result);
+                    try {
+                        // const shortenResp = await generateShortenUrl(resp.result);
+                        const shortenResp = await generateShortenUrlV2(resp.result);
 
-                    if (shortenResp.code === 200) {
+                        if (shortenResp.code === 200) {
+                            this.setState({
+                                coolbuyWebUrl: resp.result,
+                                shortenUrlMsg: {
+                                    longurl: shortenResp.result.longurl || shortenResp.result.long_url,
+                                    shorturl: shortenResp.result.shorturl || shortenResp.result.short_url
+                                }
+                            });
+
+                            this.setModal2Visible(true);
+                        }
+                    } catch (error) {
                         this.setState({
-                            coolbuyWebUrl: resp.result,
-                            shortenUrlMsg: {
-                                longurl: shortenResp.result.longurl || shortenResp.result.long_url,
-                                shorturl: shortenResp.result.shorturl || shortenResp.result.short_url
-                            }
+                            coolbuyWebUrl: resp.result
                         });
 
                         this.setModal2Visible(true);
+
+                        console.error(error);
+
                     }
                 } else {
                     message.error('生成失败，请稍候再试');
