@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Input, message, Button, Modal, Select, Tooltip } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
-import { generateShortenUrlV2 } from "../api/getDetail";
+import {
+    // generateShortenUrlV2,
+    generateShortenUrlV3
+} from "../api/getDetail";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyOutlined } from "@ant-design/icons";
 
@@ -80,7 +83,7 @@ export default class OriginUrlTransUrl extends Component<any, IState> {
         });
 
         if (this.checkUrl(inputText)) {
-            const resp = await generateShortenUrlV2(inputText, urlType);
+            const resp = await generateShortenUrlV3(inputText);
 
             if (
                 resp.code === 200 &&
