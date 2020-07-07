@@ -1,7 +1,7 @@
 /**
  * @Author: 小贤
  * @Date: 2020-03-01 23:54:12
- * @LastEditTime: 2020-05-12 17:10:16
+ * @LastEditTime: 2020-07-07 23:32:10
  * @LastEditors: 小贤
  * @Description:
  * @Email: gzyuboxian@corp.netease.com
@@ -143,6 +143,41 @@ export async function generateShortenUrlV2 (url: string, type?: string): Promise
             result: {
                 ...response.data.result,
                 ...(response.data.result.data || {})
+            }
+        };
+    } else {
+        return {
+            code: -999
+        };
+    }
+}
+
+
+/**
+ * 生成短链接
+ *
+ * @export
+ * @param {string} url
+ * @returns
+ */
+export async function generateShortenUrlV3 (url: string): Promise<IResponse> {
+    const response = await Axios.request({
+        url: '/api/genUrlByDute',
+        method: 'GET',
+        withCredentials: true,
+        params: {
+            url: encodeURIComponent(url || '')
+        }
+    });
+
+    if (response.status === 200) {
+        return {
+            ...response.data,
+            result: {
+                ...response.data.result,
+                ...(response.data.result.data || {}),
+                longurl: url,
+                shorturl: response.data.result.data.url
             }
         };
     } else {

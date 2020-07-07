@@ -5,7 +5,8 @@ import {
     getAccountMsg,
     getCoolbuyWebUrl,
     // generateShortenUrl,
-    generateShortenUrlV2
+    // generateShortenUrlV2
+    generateShortenUrlV3
 } from "../api/getDetail";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyOutlined } from "@ant-design/icons";
@@ -154,7 +155,8 @@ export default class GoodsTransUrl extends Component<any, IState> {
                 if (resp.code === 200 && resp.result) {
                     try {
                         // const shortenResp = await generateShortenUrl(resp.result);
-                        const shortenResp = await generateShortenUrlV2(resp.result);
+                        // const shortenResp = await generateShortenUrlV2(resp.result);
+                        const shortenResp = await generateShortenUrlV3(resp.result);
 
                         if (shortenResp.code === 200) {
                             this.setState({
@@ -289,7 +291,7 @@ export default class GoodsTransUrl extends Component<any, IState> {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                去详情页查看>>
+                                去详情页查看&gt;&gt;
                             </a>
                         </span>
                     </div>
